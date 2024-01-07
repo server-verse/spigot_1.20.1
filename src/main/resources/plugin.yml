@@ -1,0 +1,4 @@
+name: ServerVerse Plugin
+version: '${project.version}'
+main: net.ethanburkett.serververse.mc1_20_1
+api-version: '1.20'
