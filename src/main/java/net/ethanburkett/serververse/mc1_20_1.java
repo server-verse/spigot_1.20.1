@@ -37,5 +37,7 @@ public final class mc1_20_1 extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        getLogger().info("Attempting to shut down ServerVerse socket.");
+        server.stop(3);
     }
 }
