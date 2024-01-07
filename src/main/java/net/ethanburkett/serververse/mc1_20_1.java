@@ -1,6 +1,7 @@
 package net.ethanburkett.serververse;
 
 import com.sun.net.httpserver.HttpServer;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -18,10 +19,19 @@ public final class mc1_20_1 extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         String pluginFile = "config.yml";
-        String dataFolder = "plugins/serververse/";
-        File configFile = new File(dataFolder, pluginFile);
+        String dataFolderPath = "plugins/serververse/";
+        File dataFolder = new File(String.valueOf(dataFolderPath));
+        File configFile = new File(dataFolderPath, pluginFile);
 
         try {
+            if(!dataFolder.exists()) {
+                dataFolder.mkdir();
+                if(!configFile.exists()) {
+                    configFile.createNewFile();
+                }
+            }
+            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(configFile);
+
             server = HttpServer.create(new InetSocketAddress("localhost", 25578), 0);
             server.createContext("/status", new HttpHandler());
 
