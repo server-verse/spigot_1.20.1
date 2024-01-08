@@ -4,16 +4,27 @@ import com.sun.net.httpserver.HttpServer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public final class mc1_20_1 extends JavaPlugin {
     HttpServer server;
+
+    private boolean WriteToConfig(String key, Object value) throws IOException {
+        String pluginFile = "config.yml";
+        String dataFolderPath = "plugins/serververse/";
+        File configFile = new File(dataFolderPath, pluginFile);
+        FileWriter fw = new FileWriter(configFile.getAbsolutePath());
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(key+": "+value);
+        bw.close();
+        return true;
+    }
 
     @Override
     public void onEnable() {
@@ -23,22 +34,27 @@ public final class mc1_20_1 extends JavaPlugin {
         File dataFolder = new File(String.valueOf(dataFolderPath));
         File configFile = new File(dataFolderPath, pluginFile);
 
+        this.getCommand("verify").setExecutor(new CommandVerify());
+
         try {
             if(!dataFolder.exists()) {
-                dataFolder.mkdir();
-                if(!configFile.exists()) {
-                    configFile.createNewFile();
-                }
+                Boolean success = dataFolder.mkdir();
+            }
+            if(!configFile.exists()) {
+                Boolean success = configFile.createNewFile();
+                WriteToConfig("port", 25577);
             }
             YamlConfiguration yaml = YamlConfiguration.loadConfiguration(configFile);
+            int port = yaml.getInt("port");
 
-            server = HttpServer.create(new InetSocketAddress("localhost", 25578), 0);
-            server.createContext("/status", new HttpHandler());
+            server = HttpServer.create(new InetSocketAddress("localhost", port), 0);
+            server.createContext("/status", new HttpStatus());
+            server.createContext("/verify", new HttpVerify());
 
             ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
             server.setExecutor(threadPoolExecutor);
             server.start();
-            getLogger().info("Started ServerVerse tools on :25578");
+            getLogger().info("Started ServerVerse tools on :" + port);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
