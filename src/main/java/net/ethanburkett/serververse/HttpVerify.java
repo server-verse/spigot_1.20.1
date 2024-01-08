@@ -4,17 +4,10 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Server;
-import sun.jvm.hotspot.memory.HeapBlock;
-
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import static org.bukkit.ChatColor.*;
 
 public class HttpVerify implements com.sun.net.httpserver.HttpHandler {
     @Override
@@ -37,7 +30,7 @@ public class HttpVerify implements com.sun.net.httpserver.HttpHandler {
         Headers headers = httpExchange.getRequestHeaders();
         String clerkUserId = headers.get("clerk-user-id").get(0);
 
-        String msg = "Please run /verify "+ clerkUserId +" to confirm the connection between ServerVerse and your server.";
+        String msg = "Please run /verify " + clerkUserId + " to confirm the connection between ServerVerse and your server.";
         Bukkit.getServer().getLogger().info(msg);
 
         HashMap<String, Object> map = new HashMap<>();

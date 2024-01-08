@@ -11,19 +11,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class CommandVerify implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(sender instanceof Player) {
+    public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command, @NonNull String label, @NonNull String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             player.sendMessage("This command can only be used in console.");
             return false;
         }
-        if(args.length < 1) {
+        if (args.length < 1) {
             Bukkit.getServer().getLogger().warning("You need to provide a token.");
             return false;
         }

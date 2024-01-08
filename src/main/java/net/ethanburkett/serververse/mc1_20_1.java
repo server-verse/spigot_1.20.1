@@ -21,7 +21,7 @@ public final class mc1_20_1 extends JavaPlugin {
         File configFile = new File(dataFolderPath, pluginFile);
         FileWriter fw = new FileWriter(configFile.getAbsolutePath());
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(key+": "+value);
+        bw.write(key + ": " + value);
         bw.close();
         return true;
     }
@@ -37,10 +37,10 @@ public final class mc1_20_1 extends JavaPlugin {
         this.getCommand("verify").setExecutor(new CommandVerify());
 
         try {
-            if(!dataFolder.exists()) {
+            if (!dataFolder.exists()) {
                 Boolean success = dataFolder.mkdir();
             }
-            if(!configFile.exists()) {
+            if (!configFile.exists()) {
                 Boolean success = configFile.createNewFile();
                 WriteToConfig("port", 25577);
             }
